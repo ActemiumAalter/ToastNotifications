@@ -11,6 +11,7 @@ namespace ToastNotifications.Core
     {
         private readonly NotificationAnimator _animator;
         public INotification Notification { get; protected set; }
+        public bool AutoClose { get; set; }
 
         protected NotificationDisplayPart()
         {

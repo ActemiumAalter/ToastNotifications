@@ -110,7 +110,7 @@ namespace ToastNotifications.Lifetime
             TimeSpan now = DateTimeNow.Local.TimeOfDay;
 
             var notificationsToRemove = _notifications
-                .Where(x => x.Value.Notification.CanClose && x.Value.CreateTime + _notificationLifetime <= now)
+                .Where(x => x.Value.Notification.CanClose && x.Value.Notification.DisplayPart.AutoClose && x.Value.CreateTime + _notificationLifetime <= now)
                 .Select(x => x.Value)
                 .ToList();
 

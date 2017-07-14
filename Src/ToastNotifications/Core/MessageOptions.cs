@@ -15,5 +15,7 @@ namespace ToastNotifications.Core
         public Action<NotificationBase> NotificationClickAction { get; set; }
 
         public Action<NotificationBase> CloseClickAction { get; set; }
+
+        public bool AutoClose { get; set; } = true;
     }
 }
