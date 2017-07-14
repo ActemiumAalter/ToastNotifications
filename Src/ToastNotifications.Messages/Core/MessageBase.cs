@@ -28,9 +28,23 @@ namespace ToastNotifications.Messages.Core
 
             displayPart.Unloaded += OnUnloaded;
             displayPart.MouseLeftButtonDown += OnLeftMouseDown;
+            displayPart.MouseEnter += OnMouseEnter;
+            displayPart.MouseLeave += OnMouseLeave;
 
             UpdateDisplayOptions(displayPart, Options);
             return displayPart;
+        }
+
+        private void OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (Options.NotificationClickAction != null)
+                Mouse.OverrideCursor = Cursors.Arrow;
+        }
+
+        private void OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            if (Options.NotificationClickAction != null)
+                Mouse.OverrideCursor = Cursors.Hand;
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -43,6 +57,8 @@ namespace ToastNotifications.Messages.Core
         {
             Options.NotificationClickAction?.Invoke(this);
         }
+
+
 
         protected abstract void UpdateDisplayOptions(TDisplayPart displayPart, MessageOptions options);
 
