@@ -25,6 +25,7 @@ namespace ToastNotifications.Messages.Success
                 displayPart.Text.FontSize = options.FontSize.Value;
 
             displayPart.CloseButton.Visibility = options.ShowCloseButton ? Visibility.Visible : Visibility.Collapsed;
+            displayPart.AutoClose = options.AutoClose;
         }
     }
 }
