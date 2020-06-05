@@ -4,6 +4,7 @@ using System.Windows;
 using ToastNotifications;
 using ToastNotifications.Core;
 using ToastNotifications.Lifetime;
+using ToastNotifications.Lifetime.Clear;
 using ToastNotifications.Messages;
 using ToastNotifications.Position;
 
@@ -34,7 +35,7 @@ namespace BasicUsageExample
                 cfg.DisplayOptions.Width = 250;
             });
 
-            _notifier.ClearMessages();
+            _notifier.ClearMessages(new ClearAll());
         }
 
         public void OnUnloaded()
@@ -64,7 +65,7 @@ namespace BasicUsageExample
 
         internal void ClearMessages(string msg)
         {
-            _notifier.ClearMessages(msg);
+            _notifier.ClearMessages(new ClearByMessage(msg));
         }
 
         public void ShowWarning(string message, MessageOptions opts)
@@ -82,6 +83,10 @@ namespace BasicUsageExample
             _notifier.ShowError(message, opts);
         }
 
+        public void ClearAll()
+        {
+            _notifier.ClearMessages(new ClearAll());
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
