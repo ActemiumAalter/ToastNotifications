@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Threading;
 using ToastNotifications.Core;
+using ToastNotifications.Lifetime.Clear;
 using ToastNotifications.Utilities;
 
 namespace ToastNotifications.Lifetime
@@ -25,12 +27,17 @@ namespace ToastNotifications.Lifetime
             _notificationLifetime = notificationLifetime;
             _maximumNotificationCount = maximumNotificationCount.Count;
 
-            _notifications = new NotificationsList();
             _interval = new Interval();
         }
 
         public void PushNotification(INotification notification)
         {
+            if (_disposed)
+            {
+                Debug.WriteLine($"Warn ToastNotifications {this}.{nameof(PushNotification)} is already disposed");
+                return;
+            }
+
             if (_interval.IsRunning == false)
                 TimerStart();
 
@@ -61,8 +68,7 @@ namespace ToastNotifications.Lifetime
 
         public void CloseNotification(INotification notification)
         {
-            NotificationMetaData removedNotification;
-            _notifications.TryRemove(notification.Id, out removedNotification);
+            _notifications.TryRemove(notification.Id, out var removedNotification);
             RequestCloseNotification(new CloseNotificationEventArgs(removedNotification.Notification));
 
             if (_notificationsPending != null && _notificationsPending.Any())
@@ -72,13 +78,22 @@ namespace ToastNotifications.Lifetime
             }
         }
 
+
+        private bool _disposed = false;
         public void Dispose()
         {
-            _interval.Stop();
+            if (_disposed)
+                return;
+
+            _disposed = true;
+            _interval?.Stop();
             _interval = null;
             _notifications?.Clear();
             _notifications = null;
+            _notificationsPending?.Clear();
         }
+
+
 
         public void UseDispatcher(Dispatcher dispatcher)
         {
@@ -121,32 +136,14 @@ namespace ToastNotifications.Lifetime
                 TimerStop();
         }
 
-        public void ClearMessages(string msg)
+        public void ClearMessages(IClearStrategy clearStrategy)
         {
-
-            if (string.IsNullOrWhiteSpace(msg))
+            var notifications = clearStrategy.GetNotificationsToRemove(_notifications);
+            foreach (var notification in notifications)
             {
-                var notificationsToRemove = _notifications
-                    .Select(x => x.Value)
-                    .ToList();
-                foreach (var item in notificationsToRemove)
-                {
-                    CloseNotification(item.Notification);
-                }
-                return;
-            }
-
-            var notificationsToRemove2 = _notifications
-                .Where(x => x.Value.Notification.DisplayPart.GetMessage() == msg)
-                .Select(x => x.Value)
-                .ToList();
-            foreach (var item in notificationsToRemove2)
-            {
-                CloseNotification(item.Notification);
+                CloseNotification(notification);
             }
         }
-
-
 
         public event EventHandler<ShowNotificationEventArgs> ShowNotificationRequested;
         public event EventHandler<CloseNotificationEventArgs> CloseNotificationRequested;

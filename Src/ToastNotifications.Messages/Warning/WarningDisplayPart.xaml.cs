@@ -8,29 +8,16 @@ namespace ToastNotifications.Messages.Warning
     /// </summary>
     public partial class WarningDisplayPart : NotificationDisplayPart
     {
-        private readonly WarningMessage _viewModel;
-
         public WarningDisplayPart(WarningMessage warning)
         {
             InitializeComponent();
 
-            _viewModel = warning;
-            DataContext = warning;
-        }
-
-        public override string GetMessage()
-        {
-            return this._viewModel.Message;
+            Bind(warning);
         }
 
         private void OnClose(object sender, RoutedEventArgs e)
         {
-            _viewModel.Close();
-        }
-
-        public override MessageOptions GetOptions()
-        {
-            return this._viewModel.Options;
+            Notification.Close();
         }
     }
 }

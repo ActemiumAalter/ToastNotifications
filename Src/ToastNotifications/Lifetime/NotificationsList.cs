@@ -11,9 +11,9 @@ namespace ToastNotifications.Lifetime
 
         public NotificationMetaData Add(INotification notification)
         {
-            Interlocked.Increment(ref _id);
-            var metaData = new NotificationMetaData(notification, _id, DateTimeNow.Local.TimeOfDay);
-            this[_id] = metaData;
+            var id = Interlocked.Increment(ref _id);
+            var metaData = new NotificationMetaData(notification, id, DateTimeNow.Local.TimeOfDay);
+            this[id] = metaData;
             return metaData;
         }
     }

@@ -10,7 +10,7 @@ namespace CustomNotificationsExample.CustomMessage
 
         public override NotificationDisplayPart DisplayPart => _displayPart ?? (_displayPart = new CustomDisplayPart(this));
 
-        public CustomNotification(string title, string message)
+        public CustomNotification(string title, string message, MessageOptions messageOptions) : base(message, messageOptions)
         {
             Title = title;
             Message = message;

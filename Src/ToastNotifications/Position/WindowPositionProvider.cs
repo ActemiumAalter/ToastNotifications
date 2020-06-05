@@ -32,7 +32,7 @@ namespace ToastNotifications.Position
         {
             var parentPosition = ParentWindow.GetActualPosition();
 
-            switch (_corner)
+			switch(_corner)
             {
                 case Corner.TopRight:
                     return GetPositionForTopRightCorner(parentPosition, actualPopupWidth, actualPopupHeight);
@@ -42,6 +42,8 @@ namespace ToastNotifications.Position
                     return GetPositionForBottomRightCorner(parentPosition, actualPopupWidth, actualPopupHeight);
                 case Corner.BottomLeft:
                     return GetPositionForBottomLeftCorner(parentPosition, actualPopupWidth, actualPopupHeight);
+                case Corner.BottomCenter:
+                    return GetPositionForBottomCenter(parentPosition, actualPopupWidth, actualPopupHeight);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -54,7 +56,7 @@ namespace ToastNotifications.Position
             return actualHeight;
         }
 
-        private double GetWindowHeight()
+        private double GetWindowWidth()
         {
             var actualWidth = (ParentWindow.Content as FrameworkElement)?.ActualWidth ?? ParentWindow.ActualWidth;
 
@@ -71,6 +73,7 @@ namespace ToastNotifications.Position
                     break;
                 case Corner.BottomRight:
                 case Corner.BottomLeft:
+                case Corner.BottomCenter:
                     EjectDirection = EjectDirection.ToTop;
                     break;
                 default:
@@ -85,8 +88,14 @@ namespace ToastNotifications.Position
 
         private Point GetPositionForBottomRightCorner(Point parentPosition, double actualPopupWidth, double actualPopupHeight)
         {
-            return new Point(parentPosition.X + GetWindowHeight() - _offsetX - actualPopupWidth, parentPosition.Y - _offsetY);
+            return new Point(parentPosition.X + GetWindowWidth() - _offsetX - actualPopupWidth, parentPosition.Y - _offsetY);
         }
+
+        private Point GetPositionForBottomCenter(Point parentPosition, double actualPopupWidth, double actualPopupHeight)
+        {
+            return new Point(parentPosition.X + (GetWindowWidth() - actualPopupWidth) / 2, parentPosition.Y - _offsetY);
+        }
+
 
         private Point GetPositionForTopLeftCorner(Point parentPosition, double actualPopupWidth, double actualPopupHeight)
         {
@@ -95,7 +104,7 @@ namespace ToastNotifications.Position
 
         private Point GetPositionForTopRightCorner(Point parentPosition, double actualPopupWidth, double actualPopupHeight)
         {
-            return new Point( parentPosition.X + GetWindowHeight() - _offsetX - actualPopupWidth,  parentPosition.Y + _offsetY);
+            return new Point( parentPosition.X + GetWindowWidth() - _offsetX - actualPopupWidth,  parentPosition.Y + _offsetY);
         }
 
         public void Dispose()

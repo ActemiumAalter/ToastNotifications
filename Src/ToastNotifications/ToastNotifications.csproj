@@ -35,7 +35,7 @@
     <ApplicationIcon>toast-notifications-icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="('$(Configuration)' == 'Release') And ('$(UseTemporarySignCert)' != 'true')">
     <AssemblyOriginatorKeyFile>../../Build/DevCrew.ToastNotifications.pfx</AssemblyOriginatorKeyFile>
@@ -45,6 +45,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -57,9 +59,21 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Lifetime\Clear\ClearAll.cs" />
+    <Compile Include="Lifetime\Clear\ClearByMessage.cs" />
+    <Compile Include="Lifetime\Clear\ClearByTag.cs" />
+    <Compile Include="Lifetime\Clear\ClearFirst.cs" />
+    <Compile Include="Lifetime\Clear\ClearLast.cs" />
     <Compile Include="Core\DisplayOptions.cs" />
     <Compile Include="Core\MessageOptions.cs" />
+    <Compile Include="Core\WindowsTaskBarLocation.cs" />
+    <Compile Include="Events\AllowedSourcesInputEventHandler.cs" />
+    <Compile Include="Events\BlockAllKeyInputEventHandler.cs" />
+    <Compile Include="Events\DelegatedInputEventHandler.cs" />
+    <Compile Include="Events\IKeyboardEventHandler.cs" />
+    <Compile Include="Lifetime\Clear\IClearStrategy.cs" />
     <Compile Include="Notifier.cs" />
+    <Compile Include="Position\GdiPrimaryScreenPositionProvider.cs" />
     <Compile Include="Position\PositionExtensions.cs" />
     <Compile Include="Utilities\DateTimeNow.cs" />
     <Compile Include="Utilities\DateTimeProvider.cs" />
@@ -67,6 +81,8 @@
     <Compile Include="Utilities\IDateTimeProvider.cs" />
     <Compile Include="Utilities\IInterval.cs" />
     <Compile Include="Utilities\Interval.cs" />
+    <Compile Include="Utilities\VisualTreeHelper.cs" />
+    <Compile Include="Utilities\WinApi.cs" />
     <Page Include="Display\NotificationsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -115,6 +131,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="DevCrew.ToastNotifications.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -126,5 +143,6 @@
   <ItemGroup>
     <None Include="readme.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

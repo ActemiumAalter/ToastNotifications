@@ -13,18 +13,15 @@
     </description>
     <summary>Toast notifications for WPF</summary>
     <releaseNotes>
-      Upgrading from v1 ?
-
-      ToastNotifications v2 is completely new implementation and it's not compatibile with version 1.
-      Please follow migration instructions to upgrade to the new version.
-      https://github.com/raflop/ToastNotifications/blob/master-v2/Docs/Migration.md
+		Find out more at:
+		https://github.com/raflop/ToastNotifications/blob/master-v2/Docs/ReleaseNotes.md
     </releaseNotes>
     <language>en-US</language>
     <licenseUrl>https://github.com/raflop/ToastNotifications/blob/master-v2/license</licenseUrl>
     <projectUrl>https://github.com/raflop/ToastNotifications</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/raflop/ToastNotifications/master-v2/Media/project-icon.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <copyright>Copyright © Rafał Łopatka 2017</copyright>
+    <copyright>Copyright © Rafał Łopatka 2018</copyright>
     <references></references>
     <tags>WPF notifications, Toast notifications, XAML notifications, c# notifications, UI notifications, ToastNotifications, toasts, messages, notifications, WPF, XAML, UI, notify, message, toast</tags>
   </metadata>

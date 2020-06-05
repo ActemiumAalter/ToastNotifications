@@ -12,8 +12,9 @@ namespace ToastNotifications.Core
 
         void Close();
 
-        string GetMessage();
-
+        string Message { get; }
         bool CanClose { get; set; }
+
+        MessageOptions Options {get; }
     }
 }

@@ -53,6 +53,7 @@ namespace BasicUsageExample
                 CloseClickAction = CloseAction,
                 Tag = $"[This is Tag Value ({++_count})]",
                 FreezeOnMouseEnter = cbFreezeOnMouseEnter.IsChecked.GetValueOrDefault(),
+                UnfreezeOnMouseLeave = cbUnfreezeOnMouseLeave.IsChecked.GetValueOrDefault(),
                 ShowCloseButton = cbShowCloseButton.IsChecked.GetValueOrDefault()
             };
             _lastMessage = $"{_count} {name}";
@@ -62,14 +63,14 @@ namespace BasicUsageExample
 
         private void CloseAction(NotificationBase obj)
         {
-            var opts = obj.DisplayPart.GetOptions();
+            var opts = obj.DisplayPart.Notification.Options;
             _vm.ShowInformation($"Notification close clicked, Tag: {opts.Tag}");
         }
 
 
         private void Button_ClearClick(object sender, RoutedEventArgs e)
         {
-            _vm.ClearMessages("");
+            _vm.ClearAll();
         }
 
         private void Button_ClearLastClick(object sender, RoutedEventArgs e)

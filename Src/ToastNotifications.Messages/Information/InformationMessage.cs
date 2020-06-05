@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Runtime.InteropServices;
+using System.Windows;
 using ToastNotifications.Core;
 using ToastNotifications.Messages.Core;
 
@@ -16,7 +17,7 @@ namespace ToastNotifications.Messages.Information
 
         protected override InformationDisplayPart CreateDisplayPart()
         {
-            return new InformationDisplayPart(this);
+            return new InformationDisplayPart(this, Options);
         }
 
         protected override void UpdateDisplayOptions(InformationDisplayPart displayPart, MessageOptions options)

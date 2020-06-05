@@ -8,29 +8,15 @@ namespace ToastNotifications.Messages.Information
     /// </summary>
     public partial class InformationDisplayPart : NotificationDisplayPart
     {
-        private readonly InformationMessage _viewModel;
-
-        public InformationDisplayPart(InformationMessage information)
+        public InformationDisplayPart(InformationMessage information, MessageOptions options)
         {
             InitializeComponent();
-
-            _viewModel = information;
-            DataContext = information;
-        }
-
-        public override string GetMessage()
-        {
-            return this._viewModel.Message;
+            Bind(information);
         }
 
         private void OnClose(object sender, RoutedEventArgs e)
         {
-            _viewModel.Close();
-        }
-
-        public override MessageOptions GetOptions()
-        {
-            return this._viewModel.Options;
+            Notification.Close();
         }
     }
 }

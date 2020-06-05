@@ -16,7 +16,8 @@
         ShowInTaskbar="False"
         SizeToContent="WidthAndHeight" 
         Topmost="True" 
-        ShowActivated="False" >
+        ShowActivated="False"
+        >
     <Grid>
         <local:NotificationsItemsControl x:Name="NotificationsList" ShouldReverseItems="False" />
     </Grid>

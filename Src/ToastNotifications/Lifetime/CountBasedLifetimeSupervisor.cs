@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Threading;
 using ToastNotifications.Core;
+using ToastNotifications.Lifetime.Clear;
 
 namespace ToastNotifications.Lifetime
 {
@@ -19,6 +21,12 @@ namespace ToastNotifications.Lifetime
 
         public void PushNotification(INotification notification)
         {
+            if (_disposed)
+            {
+                Debug.WriteLine($"Warn ToastNotifications {this}.{nameof(PushNotification)} is already disposed");
+                return;
+            }
+
             int numberOfNotificationsToClose = Math.Max(_notifications.Count - _maximumNotificationCount, 0);
 
             var notificationsToRemove = _notifications
@@ -36,8 +44,7 @@ namespace ToastNotifications.Lifetime
 
         public void CloseNotification(INotification notification)
         {
-            NotificationMetaData removedNotification;
-            _notifications.TryRemove(notification.Id, out removedNotification);
+            _notifications.TryRemove(notification.Id, out var removedNotification);
             RequestCloseNotification(new CloseNotificationEventArgs(removedNotification.Notification));
         }
 
@@ -51,8 +58,14 @@ namespace ToastNotifications.Lifetime
             CloseNotificationRequested?.Invoke(this, e);
         }
 
+
+        private bool _disposed = false;
         public void Dispose()
         {
+            if (_disposed)
+                return;
+
+            _disposed = true;
             _notifications?.Clear();
             _notifications = null;
         }
@@ -61,9 +74,13 @@ namespace ToastNotifications.Lifetime
         {
         }
 
-
-        public void ClearMessages(string msg)
+        public void ClearMessages(IClearStrategy clearStrategy)
         {
+            var notifications = clearStrategy.GetNotificationsToRemove(_notifications);
+            foreach (var notification in notifications)
+            {
+                CloseNotification(notification);
+            }
         }
 
         public event EventHandler<ShowNotificationEventArgs> ShowNotificationRequested;

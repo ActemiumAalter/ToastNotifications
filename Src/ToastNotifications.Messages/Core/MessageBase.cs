@@ -6,18 +6,10 @@ namespace ToastNotifications.Messages.Core
 {
     public abstract class MessageBase<TDisplayPart> : NotificationBase where TDisplayPart : NotificationDisplayPart
     {
-        protected NotificationDisplayPart _displayPart;
-        internal readonly MessageOptions Options;
-
-        public string Message { get; }
-
-        public MessageBase(string message, MessageOptions options)
+        private NotificationDisplayPart _displayPart;
+        
+        protected MessageBase(string message, MessageOptions options): base(message, options)
         {
-            Message = message;
-            if (options == null)
-                Options = new MessageOptions();
-            else
-                Options = options;
         }
 
         public override NotificationDisplayPart DisplayPart => _displayPart ?? (_displayPart = Configure());

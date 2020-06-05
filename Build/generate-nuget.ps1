@@ -2,7 +2,7 @@ param([string]$version="2.0.0.0")
 
 $env:Path += ";C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE"
 $projects = "ToastNotifications", "ToastNotifications.Messages"
-$solution = "../Src/WpfNotifications.sln"
+$solution = "../Src/ToastNotifications.sln"
 
 $versionRegexp = "(\d+\.\d+\.\d+\.\d+)"
 

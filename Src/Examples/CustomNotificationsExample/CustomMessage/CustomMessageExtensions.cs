@@ -1,12 +1,16 @@
 ﻿using ToastNotifications;
+using ToastNotifications.Core;
 
 namespace CustomNotificationsExample.CustomMessage
 {
     public static class CustomMessageExtensions
     {
-        public static void ShowCustomMessage(this Notifier notifier, string title, string message)
+        public static void ShowCustomMessage(this Notifier notifier, 
+            string title, 
+            string message,
+            MessageOptions messageOptions = null)
         {
-            notifier.Notify<CustomNotification>(() => new CustomNotification(title, message));
+            notifier.Notify(() => new CustomNotification(title, message, messageOptions));
         }
     }
 }

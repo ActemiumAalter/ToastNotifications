@@ -1,4 +1,5 @@
 ﻿using System.Windows.Threading;
+using ToastNotifications.Events;
 using ToastNotifications.Lifetime;
 
 namespace ToastNotifications.Core
@@ -9,6 +10,7 @@ namespace ToastNotifications.Core
         public INotificationsLifetimeSupervisor LifetimeSupervisor { get; set; }
         public Dispatcher Dispatcher { get; set; }
         public DisplayOptions DisplayOptions { get; }
+        public IKeyboardEventHandler KeyboardEventHandler { get; set; }
 
         public NotifierConfiguration()
         {

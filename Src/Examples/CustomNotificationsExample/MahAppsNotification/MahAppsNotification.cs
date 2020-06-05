@@ -10,7 +10,7 @@ namespace CustomNotificationsExample.MahAppsNotification
 
         public override NotificationDisplayPart DisplayPart => _displayPart ?? (_displayPart = new MahAppsDisplayPart(this));
 
-        public MahAppsNotification(string title, string message)
+        public MahAppsNotification(string title, string message, MessageOptions messageOptions) : base(message, messageOptions)
         {
             Title = title;
             Message = message;

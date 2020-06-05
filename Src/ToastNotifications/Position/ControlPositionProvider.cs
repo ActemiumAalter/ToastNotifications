@@ -38,7 +38,7 @@ namespace ToastNotifications.Position
 
             Matrix transform = source.CompositionTarget.TransformFromDevice;
             Point location = transform.Transform(_element.PointToScreen(new Point(0, 0)));
-            
+
             switch (_corner)
             {
                 case Corner.TopRight:
@@ -47,6 +47,8 @@ namespace ToastNotifications.Position
                     return GetPositionForTopLeftCorner(location, actualPopupWidth, actualPopupHeight);
                 case Corner.BottomRight:
                     return GetPositionForBottomRightCorner(location, actualPopupWidth, actualPopupHeight);
+                case Corner.BottomCenter:
+                    return GetPositionForBottomCenterCorner(location, actualPopupWidth, actualPopupHeight);
                 case Corner.BottomLeft:
                     return GetPositionForBottomLeftCorner(location, actualPopupWidth, actualPopupHeight);
                 default:
@@ -69,6 +71,7 @@ namespace ToastNotifications.Position
                     break;
                 case Corner.BottomRight:
                 case Corner.BottomLeft:
+                case Corner.BottomCenter:
                     EjectDirection = EjectDirection.ToTop;
                     break;
                 default:
@@ -85,6 +88,12 @@ namespace ToastNotifications.Position
         {
             return new Point(location.X + _element.ActualWidth - _offsetX - actualPopupWidth, location.Y + _element.ActualHeight - _offsetY - actualPopupHeight);
         }
+
+        private Point GetPositionForBottomCenterCorner(Point location, double actualPopupWidth, double actualPopupHeight)
+        {
+            return new Point(location.X + (_element.ActualWidth - _offsetX - actualPopupWidth) / 2, location.Y + _element.ActualHeight - _offsetY - actualPopupHeight);
+        }
+
 
         private Point GetPositionForTopLeftCorner(Point location, double actualPopupWidth, double actualPopupHeight)
         {
@@ -116,11 +125,12 @@ namespace ToastNotifications.Position
         {
             RequestUpdatePosition();
         }
-
-        public event EventHandler UpdatePositionRequested;
+#pragma warning disable CS0067
+		public event EventHandler UpdatePositionRequested;
 
         public event EventHandler UpdateEjectDirectionRequested;
 
         public event EventHandler UpdateHeightRequested;
-    }
+#pragma warning restore CS0067
+	}
 }

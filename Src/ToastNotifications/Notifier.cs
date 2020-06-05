@@ -2,7 +2,11 @@
 using System.Windows;
 using ToastNotifications.Core;
 using ToastNotifications.Display;
+using ToastNotifications.Events;
 using ToastNotifications.Lifetime;
+using ToastNotifications.Lifetime.Clear;
+
+// ReSharper disable LocalizableElement
 
 namespace ToastNotifications
 {
@@ -20,7 +24,8 @@ namespace ToastNotifications
             _configureAction = configureAction;
         }
 
-        public void Notify<T>(Func<INotification> createNotificationFunc)
+        public void Notify<T>(Func<T> createNotificationFunc)
+            where T: INotification
         {
             Configure();
             _lifetimeSupervisor.PushNotification(createNotificationFunc());
@@ -33,38 +38,42 @@ namespace ToastNotifications
                 if (_configuration != null)
                     return;
 
-                var cfg = new NotifierConfiguration
-                {
-                    Dispatcher = Application.Current.Dispatcher
-                };
-                _configureAction(cfg);
+                var cfg = CreateConfiguration();
 
-                if (cfg.LifetimeSupervisor == null)
-                    throw new ArgumentNullException(nameof(cfg.LifetimeSupervisor), "Missing configuration argument");
-
-                if (cfg.PositionProvider == null)
-                    throw new ArgumentNullException(nameof(cfg.PositionProvider), "Missing configuration argument");
+                var keyboardEventHandler = cfg.KeyboardEventHandler ?? new BlockAllKeyInputEventHandler();
 
                 _configuration = cfg;
                 _lifetimeSupervisor = cfg.LifetimeSupervisor;
                 _lifetimeSupervisor.UseDispatcher(cfg.Dispatcher);
 
                 _displaySupervisor = new NotificationsDisplaySupervisor(
-                    cfg.Dispatcher, 
-                    cfg.PositionProvider, 
-                    cfg.LifetimeSupervisor, 
-                    cfg.DisplayOptions);
+                    cfg.Dispatcher,
+                    cfg.PositionProvider,
+                    cfg.LifetimeSupervisor,
+                    cfg.DisplayOptions,
+                    keyboardEventHandler);
             }
         }
 
-        public void ClearMessages()
+        private NotifierConfiguration CreateConfiguration()
         {
-            ClearMessages("");
+            var cfg = new NotifierConfiguration
+            {
+                Dispatcher = Application.Current.Dispatcher
+            };
+            _configureAction(cfg);
+
+            if (cfg.LifetimeSupervisor == null)
+                throw new ArgumentNullException(nameof(cfg.LifetimeSupervisor), "Missing configuration argument");
+
+            if (cfg.PositionProvider == null)
+                throw new ArgumentNullException(nameof(cfg.PositionProvider), "Missing configuration argument");
+            return cfg;
         }
 
-        public void ClearMessages(string msg)
+        public void ClearMessages(IClearStrategy clearStrategy)
         {
-            this._lifetimeSupervisor?.ClearMessages(msg);
+            _lifetimeSupervisor?.ClearMessages(clearStrategy);
         }
 
         private bool _disposed = false;

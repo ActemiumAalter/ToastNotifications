@@ -8,29 +8,16 @@ namespace ToastNotifications.Messages.Success
     /// </summary>
     public partial class SuccessDisplayPart : NotificationDisplayPart
     {
-        private readonly SuccessMessage _viewModel;
-
         public SuccessDisplayPart(SuccessMessage success)
         {
             InitializeComponent();
 
-            _viewModel = success;
-            DataContext = success;
-        }
-
-        public override string GetMessage()
-        {
-            return this._viewModel.Message;
+            Bind(success);
         }
 
         private void OnClose(object sender, RoutedEventArgs e)
         {
-            _viewModel.Close();
-        }
-
-        public override MessageOptions GetOptions()
-        {
-            return this._viewModel.Options;
+            Notification.Close();
         }
     }
 }

@@ -97,6 +97,9 @@ notifier.Dispose();
 
 ## Documentation
 
+* [Relesae notes](https://github.com/raflop/ToastNotifications/blob/master-v2/Docs/ReleaseNotes.md)
+  Release notes, description of new features, bug fixes and breaking changes.
+  
 * [Upgrading from v1](https://github.com/raflop/ToastNotifications/blob/master-v2/Docs/Migration.md)
   ToastNotifications v2 is completely new implementation and it's not compatibile with version 1, follow migration instructions to upgrade to the new version.
 
@@ -110,12 +113,38 @@ notifier.Dispose();
   ToastNotifications v2 assembies are signed. Read this doc for more details.
 
 ## Contributors
-B. Micka (https://github.com/b-mi)
-
-Uwy (https://github.com/Uwy)
 
 Andy Li (https://github.com/oneandy)
 
+B. Micka (https://github.com/b-mi)
+
+CuiLiang (https://github.com/cuiliang)
+
 BrainCrumbz (https://github.com/BrainCrumbz)
 
-wdcossey (https://github.com/wdcossey)
+Fischjoghurt (https://github.com/Fischjoghurt)
+
+Francois Botha igitur (https://github.com/igitur)
+
+Jan M. (https://github.com/Pantheas)
+
+Johannes Jidel (https://github.com/jidel)
+
+Kostiantyn (https://github.com/dualbios)
+
+Krzysztof Zmorzyński (https://github.com/ZmorzynskiK)
+
+Robin Krom Lakritzator (https://github.com/Lakritzator)
+
+Uwy (https://github.com/Uwy)
+
+William David Cossey (https://github.com/wdcossey)
+
+
+
+## Creating new issues
+Before you create new issue, please check the documentation, because many features and options are already there.
+(https://github.com/raflop/ToastNotifications/tree/master-v2/Docs)
+
+If there is still a problem, please create new issue/question filling following informations. 
+If it's possible, please provide a sample code to reproduce issue.

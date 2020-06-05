@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using ToastNotifications;
 using ToastNotifications.Core;
 using ToastNotifications.Lifetime;
+using ToastNotifications.Lifetime.Clear;
 using ToastNotifications.Messages;
 using ToastNotifications.Position;
 
@@ -14,6 +15,7 @@ namespace ConfigurationExample
     public class MainViewModel : INotifyPropertyChanged
     {
         #region notifier configuration
+
         private Notifier _notifier;
 
         public MainViewModel()
@@ -32,6 +34,7 @@ namespace ConfigurationExample
                 cfg.PositionProvider = CreatePositionProvider(corner, relation);
                 cfg.LifetimeSupervisor = CreateLifetimeSupervisor(lifetime);
                 cfg.Dispatcher = Dispatcher.CurrentDispatcher;
+                cfg.DisplayOptions.TopMost = TopMost.GetValueOrDefault();
             });
         }
 
@@ -50,7 +53,8 @@ namespace ConfigurationExample
             if (lifetime == NotificationLifetimeType.Basic)
                 return new CountBasedLifetimeSupervisor(MaximumNotificationCount.FromCount(5));
 
-            return new TimeAndCountBasedLifetimeSupervisor(TimeSpan.FromSeconds(3), MaximumNotificationCount.UnlimitedNotifications());
+            return new TimeAndCountBasedLifetimeSupervisor(TimeSpan.FromSeconds(3),
+                MaximumNotificationCount.UnlimitedNotifications());
         }
 
         private static IPositionProvider CreatePositionProvider(Corner corner, PositionProviderType relation)
@@ -58,44 +62,70 @@ namespace ConfigurationExample
             switch (relation)
             {
                 case PositionProviderType.Window:
-                    {
-                        return new WindowPositionProvider(Application.Current.MainWindow, corner, 5, 5);
-                    }
+                {
+                    return new WindowPositionProvider(Application.Current.MainWindow, corner, 5, 5);
+                }
                 case PositionProviderType.Screen:
-                    {
-                        return new PrimaryScreenPositionProvider(corner, 5, 5);
-                    }
+                {
+                    return new PrimaryScreenPositionProvider(corner, 5, 5);
+                }
                 case PositionProviderType.Control:
-                    {
-                        var mainWindow = Application.Current.MainWindow as MainWindow;
-                        var trackingElement = mainWindow?.TrackingElement;
-                        return new ControlPositionProvider(mainWindow, trackingElement, corner, 5, 5);
-                    }
+                {
+                    var mainWindow = Application.Current.MainWindow as MainWindow;
+                    var trackingElement = mainWindow?.TrackingElement;
+                    return new ControlPositionProvider(mainWindow, trackingElement, corner, 5, 5);
+                }
             }
 
             throw new InvalidEnumArgumentException();
         }
+
         #endregion
 
         #region notifier messages
+
         internal void ShowWarning(string message)
         {
-            _notifier.ShowWarning(message);
+            _notifier.ShowWarning(message, CreateOptions());
+            RememberMessage(message);
         }
 
         internal void ShowSuccess(string message)
         {
-            _notifier.ShowSuccess(message);
+            _notifier.ShowSuccess(message, CreateOptions());
+            RememberMessage(message);
         }
 
         public void ShowInformation(string message)
         {
-            _notifier.ShowInformation(message);
+            _notifier.ShowInformation(message, CreateOptions());
+            RememberMessage(message);
         }
 
         public void ShowError(string message)
         {
-            _notifier.ShowError(message);
+            _notifier.ShowError(message, CreateOptions());
+            RememberMessage(message);
+        }
+
+        private string _lastMessage = "";
+        private void RememberMessage(string message)
+        {
+            if (_messageCounter % 3 == 0)
+            {
+                _lastMessage = message;
+            }
+        }
+
+        private int _messageCounter = 0;
+        private MessageOptions CreateOptions()
+        {
+            return new MessageOptions
+            {
+                FreezeOnMouseEnter = FreezeOnMouseEnter.GetValueOrDefault(),
+                ShowCloseButton = ShowCloseButton.GetValueOrDefault(),
+                Tag = ++_messageCounter % 2
+            };
         }
 
         public void ShowCustomizedMessage(string message)
@@ -158,14 +188,39 @@ namespace ConfigurationExample
             }
         }
 
+        public bool? FreezeOnMouseEnter { get; set; } = true;
+        public bool? ShowCloseButton { get; set; } = false;
+
+        public bool? TopMost { get; set; } = true;
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null)
-                handler.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
+
+        public void ClearLast()
+        {
+            _notifier.ClearMessages(new ClearLast());
+        }
+
+        public void ClearAll()
+        {
+           _notifier.ClearMessages(new ClearAll());
+        }
+
+        public void ClearByTag()
+        {
+            _notifier.ClearMessages(new ClearByTag(0));
+        }
+
+        public void ClearByMessage()
+        {
+            _notifier.ClearMessages(new ClearByMessage(_lastMessage));
+        }
     }
 }

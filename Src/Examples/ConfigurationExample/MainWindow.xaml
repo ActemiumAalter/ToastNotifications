@@ -12,6 +12,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40" />
+            <RowDefinition Height="40" />
         </Grid.RowDefinitions>
         
         <Grid ShowGridLines="True">
@@ -45,24 +46,40 @@
             <StackPanel Grid.Column="0" Orientation="Horizontal"  VerticalAlignment="Center">
                 <TextBlock Text="Position provider:" VerticalAlignment="Center" Margin="5" FontWeight="Bold" />
                 <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=PositionProviderType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Window}">Window</RadioButton>
-                <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=PositionProviderType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Screen}">Main screen</RadioButton>
+                <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=PositionProviderType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Screen}" Margin="10 0">Main screen</RadioButton>
                 <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=PositionProviderType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Control}">Control</RadioButton>
             </StackPanel>
-            <StackPanel Grid.Column="1" Orientation="Horizontal"  VerticalAlignment="Center" >
+            <DockPanel Grid.Column="1" Grid.ColumnSpan="2" >
                 <TextBlock Text="Corner:" VerticalAlignment="Center" Margin="5" FontWeight="Bold" />
                 <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=Corner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=TopLeft}">TopLeft</RadioButton>
-                <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=Corner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BottomLeft}">BottomLeft</RadioButton>
+                <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=Corner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BottomLeft}" Margin="20 0">BottomLeft</RadioButton>
                 <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=Corner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=TopRight}">TopRight</RadioButton>
-                <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=Corner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BottomRight}">BottomRight</RadioButton>
-            </StackPanel>
-            <StackPanel Grid.Column="2" Orientation="Horizontal"  VerticalAlignment="Center" >
+                <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=Corner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BottomRight}" Margin="20 0">BottomRight</RadioButton>
+                <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=Corner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=BottomCenter}">BottomCenter</RadioButton>
+            </DockPanel>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal"  VerticalAlignment="Center" >
                 <TextBlock Text="Lifetime:" VerticalAlignment="Center" Margin="5" FontWeight="Bold" />
                 <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=Lifetime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=Basic}">Basic</RadioButton>
                 <RadioButton VerticalAlignment="Center" IsChecked="{Binding Path=Lifetime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource EnumBooleanConverter}, ConverterParameter=TimeBased}">Time based</RadioButton>
             </StackPanel>
+            <StackPanel Grid.Column="2" Orientation="Horizontal"  VerticalAlignment="Center" >
+                <TextBlock Text="Options:" VerticalAlignment="Center" Margin="5" FontWeight="Bold" />
+                <CheckBox IsChecked="{Binding ShowCloseButton, Mode=TwoWay}" VerticalAlignment="Center">ShowCloseButton</CheckBox>
+                <CheckBox IsChecked="{Binding FreezeOnMouseEnter, Mode=TwoWay}" VerticalAlignment="Center" Margin="20 0 0 0">FreezeOnMouseEnter</CheckBox>
+                <CheckBox IsChecked="{Binding TopMost, Mode=TwoWay}" VerticalAlignment="Center" Margin="20 0 0 0">Topmost</CheckBox>
+            </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="3">
+
+        <Grid Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
@@ -74,6 +91,12 @@
                 <Button Content="Warning" Margin="5" Width="100" Click="Button_ShowWarningClick" />
                 <Button Content="Error" Margin="5" Width="100" Click="Button_ShowErrorClick" />
                 <Button Content="Customized" Margin="5" Width="100" Click="Button_ShowCustomizedMessageClick" />
+
+                <Button Content="Clear last" Margin="5" Width="100" Click="Button_ClearLastClick" />
+                <Button Content="Clear all" Margin="5" Width="100" Click="Button_ClearAllClick" />
+                <Button Content="Clear by Tag" Margin="5" Width="100" Click="Button_ClearByTag" />
+                <Button Content="Clear by Message" Margin="5" Width="100" Click="Button_ClearByMessage" />
+
             </StackPanel>
         </Grid>
    

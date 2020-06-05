@@ -120,8 +120,11 @@ Notifier notifier = new Notifier(cfg =>
     /* * */
 });
 
-notifier.ClearMessages(); // removes all notifications
-notifier.ClearMessages("Foo"); // removes all notifications with text "Foo"
+notifier.ClearMessages(new ClearAll()); // removes all notifications
+notifier.ClearMessages(new ClearByMessage()); // removes only messages with message specified message text
+notifier.ClearMessages(new ClearByTag()); // removes all notifications with specified tag
+notifier.ClearMessages(new ClearFirst()); // removes first notification
+notifier.ClearMessages(new ClearLast()); // removes last notification
 ```
 
 
@@ -132,10 +135,9 @@ using ToastNotifications.Messages.Core;
 /* * */
 var options =  new MessageOptions{
     FontSize = 30, // set notification font size
-    ShowCloseButton = false // set the option to show or hide notification close button
+    ShowCloseButton = false, // set the option to show or hide notification close button
     Tag = "Any object or value which might matter in callbacks",
     FreezeOnMouseEnter = true, // set the option to prevent notification dissapear automatically if user move cursor on it
-    ShowCloseButton = true, // set the option to show or hide close button on notifications
     NotificationClickAction = n => // set the callback for notification click event
     {
         n.Close(); // call Close method to remove notification
@@ -148,4 +150,18 @@ var options =  new MessageOptions{
 };
 /* * */
 notifier.ShowError(message, options);
+```
+
+### Notifier keyboard event handler
+By default notifier blocks every key input in notification to avoid interruptions and other problems.
+In cases when you need text inputs in custom notifications, you have to specify KeyboardEventHandler which will decide if keyboard event should be blocked or pass through.
+
+```csharp
+Notifier notifier = new Notifier(cfg =>
+{
+    /* * */
+	cfg.KeyboardEventHandler = new DelegatedInputEventHandler(args => { args.Handled = true/false; });
+	 /* * */
+	cfg.KeyboardEventHandler = new AllowedSourcesInputEventHandler(new []{ typeof(CustomInputDisplayPart) });
+});
 ```

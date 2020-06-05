@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Threading;
 using ToastNotifications.Core;
+using ToastNotifications.Lifetime.Clear;
 
 namespace ToastNotifications.Lifetime
 {
@@ -14,6 +15,6 @@ namespace ToastNotifications.Lifetime
         event EventHandler<ShowNotificationEventArgs> ShowNotificationRequested;
         event EventHandler<CloseNotificationEventArgs> CloseNotificationRequested;
 
-        void ClearMessages(string msg);
+        void ClearMessages(IClearStrategy clearStrategy);
     }
 }

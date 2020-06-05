@@ -4,9 +4,20 @@ namespace ToastNotifications.Core
 {
     public abstract class NotificationBase : INotification
     {
+        protected NotificationBase(string message, MessageOptions options)
+        {
+            Message = message;
+
+            Options = options ?? new MessageOptions();
+        }
+
+        public string Message { get; }
+
         private Action<INotification> _closeAction;
 
         public bool CanClose { get; set; } = true;
+
+        public MessageOptions Options { get; }
 
         public abstract NotificationDisplayPart DisplayPart { get; }
 
@@ -19,17 +30,9 @@ namespace ToastNotifications.Core
 
         public virtual void Close()
         {
-            var opts = DisplayPart.GetOptions() as MessageOptions;
-            if (opts != null && opts.CloseClickAction != null)
-            {
-                opts.CloseClickAction(this);
-            }
-            _closeAction.Invoke(this);
+            Options?.CloseClickAction?.Invoke(this);
+            _closeAction?.Invoke(this);
         }
 
-        public string GetMessage()
-        {
-            return DisplayPart.GetMessage();
-        }
     }
 }

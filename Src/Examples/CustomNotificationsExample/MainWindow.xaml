@@ -11,6 +11,7 @@
         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
             <Button Content="Custom message" Margin="5" Padding="5" Click="CustomMessage_Click"/>
             <Button Content="Custom command" Margin="5" Padding="5" Click="CustomCommand_Click"/>
+            <Button Content="Custom input" Margin="5" Padding="5" Click="CustomInput_Click"/>
             <Button Content="MahApps command" Margin="5" Padding="5" Click="MahApps_Click"/>
         </StackPanel>
     </Grid>

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Threading;
 using ToastNotifications.Core;
+using ToastNotifications.Events;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Utilities;
 
@@ -13,19 +14,22 @@ namespace ToastNotifications.Display
         private readonly Dispatcher _dispatcher;
         private readonly IPositionProvider _positionProvider;
         private readonly DisplayOptions _displayOptions;
+        private readonly IKeyboardEventHandler _keyboardEventHandler;
 
         private INotificationsLifetimeSupervisor _lifetimeSupervisor;
         private NotificationsWindow _window;
 
-        public NotificationsDisplaySupervisor(Dispatcher dispatcher, 
-            IPositionProvider positionProvider, 
+        public NotificationsDisplaySupervisor(Dispatcher dispatcher,
+            IPositionProvider positionProvider,
             INotificationsLifetimeSupervisor lifetimeSupervisor,
-            DisplayOptions displayOptions)
+            DisplayOptions displayOptions, 
+            IKeyboardEventHandler keyboardEventHandler)
         {
             _dispatcher = dispatcher;
             _positionProvider = positionProvider;
             _lifetimeSupervisor = lifetimeSupervisor;
             _displayOptions = displayOptions;
+            _keyboardEventHandler = keyboardEventHandler;
 
             _lifetimeSupervisor.ShowNotificationRequested += LifetimeSupervisorOnShowNotificationRequested;
             _lifetimeSupervisor.CloseNotificationRequested += LifetimeSupervisorOnCloseNotificationRequested;
@@ -78,23 +82,30 @@ namespace ToastNotifications.Display
                 _window.MinHeight = _positionProvider.GetHeight();
                 _window.Height = _positionProvider.GetHeight();
                 _window.SetPosition(new Point(Double.NaN, Double.NaN));
+                _window.SetKeyboardEventHandler(_keyboardEventHandler);
             }
         }
 
         private void UpdateWindowPosition()
         {
+            if(_window == null || !_window.IsLoaded)
+                return;
             Point position = _positionProvider.GetPosition(_window.GetWidth(), _window.GetHeight());
             _window.SetPosition(position);
         }
 
         private void UpdateEjectDirection()
         {
-            _window.SetEjectDirection(_positionProvider.EjectDirection);
+			if(_window == null || !_window.IsLoaded)
+				return;
+			_window.SetEjectDirection(_positionProvider.EjectDirection);
         }
 
         private void UpdateHeight()
         {
-            var height = _positionProvider.GetHeight();
+			if(_window == null || !_window.IsLoaded)
+				return;
+			var height = _positionProvider.GetHeight();
             _window.MinHeight = height;
             _window.Height = height;
         }
@@ -110,7 +121,9 @@ namespace ToastNotifications.Display
             if (notification != null)
             {
                 notification.DisplayPart.OnClose();
-                DelayAction.Execute(TimeSpan.FromMilliseconds(300), () => _window?.CloseNotification(notification.DisplayPart));
+                DelayAction.Execute(TimeSpan.FromMilliseconds(300), 
+                    () => _window?.CloseNotification(notification.DisplayPart),
+                    _dispatcher);
             }
         }
 

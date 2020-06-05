@@ -57,12 +57,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomInput\CustomInputDisplayPart.xaml.cs">
+      <DependentUpon>CustomInputDisplayPart.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomInput\CustomCommandExtensions.cs" />
+    <Compile Include="CustomInput\CustomInputNotification.cs" />
     <Compile Include="MahAppsNotification\MahAppsDisplayPart.xaml.cs">
       <DependentUpon>MahAppsDisplayPart.xaml</DependentUpon>
     </Compile>
     <Compile Include="MahAppsNotification\MahAppsNotification.cs" />
     <Compile Include="MahAppsNotification\MahAppsNotificationExtensions.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
+    <Page Include="CustomInput\CustomInputDisplayPart.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="CustomCommand\CustomCommandDisplayPart.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

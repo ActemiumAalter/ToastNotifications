@@ -45,5 +45,25 @@ namespace ConfigurationExample
         {
             _vm.ShowCustomizedMessage(CreateMessage());
         }
+
+        private void Button_ClearLastClick(object sender, RoutedEventArgs e)
+        {
+            _vm.ClearLast();
+        }
+
+        private void Button_ClearAllClick(object sender, RoutedEventArgs e)
+        {
+            _vm.ClearAll();
+        }
+
+        private void Button_ClearByTag(object sender, RoutedEventArgs e)
+        {
+            _vm.ClearByTag();
+        }
+
+        private void Button_ClearByMessage(object sender, RoutedEventArgs e)
+        {
+            _vm.ClearByMessage();
+        }
     }
 }

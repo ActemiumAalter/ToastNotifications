@@ -43,6 +43,8 @@ namespace ToastNotifications.Display
         private static void PrepareItemsControl(ItemsControl itemsControl, bool reverse)
         {
             Panel itemPanel = GetItemsPanel(itemsControl);
+			if(itemPanel == null)
+				return;
 
             int scaleY = reverse ? -1 : 1;
 
@@ -114,6 +116,11 @@ namespace ToastNotifications.Display
         public void RemoveNotification(NotificationDisplayPart notification)
         {
             Items.Remove(notification);
+        }
+
+        public int GetItemCount()
+        {
+            return Items.Count;
         }
     }
 }

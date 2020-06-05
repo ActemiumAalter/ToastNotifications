@@ -1,15 +1,18 @@
-﻿using CustomNotificationsExample.CustomCommand;
-using System;
+﻿using System;
 using ToastNotifications;
 using ToastNotifications.Core;
 
-namespace CustomNotificationsExample.CustomMessage
+namespace CustomNotificationsExample.CustomCommand
 {
     public static class CustomCommandExtensions
     {
-        public static void ShowCustomCommand(this Notifier notifier, string message, Action<CustomCommandNotification> confirmAction, Action<CustomCommandNotification> declineAction)
+        public static void ShowCustomCommand(this Notifier notifier, 
+            string message, 
+            Action<CustomCommandNotification> confirmAction, 
+            Action<CustomCommandNotification> declineAction,
+            MessageOptions messageOptions = null)
         {
-            notifier.Notify<CustomCommandNotification>(() => new CustomCommandNotification(message, confirmAction, declineAction));
+            notifier.Notify(() => new CustomCommandNotification(message, confirmAction, declineAction, messageOptions));
         }
     }
 }

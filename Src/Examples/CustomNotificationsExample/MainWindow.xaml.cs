@@ -3,7 +3,10 @@ using CustomNotificationsExample.MahAppsNotification;
 using MahApps.Metro.Controls;
 using System;
 using System.Windows;
+using CustomNotificationsExample.CustomCommand;
+using CustomNotificationsExample.CustomInput;
 using ToastNotifications;
+using ToastNotifications.Events;
 using ToastNotifications.Lifetime;
 using ToastNotifications.Position;
 
@@ -14,7 +17,7 @@ namespace CustomNotificationsExample
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private Notifier _notifier;
+        private readonly Notifier _notifier;
 
         public MainWindow()
         {
@@ -24,8 +27,9 @@ namespace CustomNotificationsExample
 
             _notifier = new Notifier(cfg =>
             {
-                cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(TimeSpan.FromSeconds(5), MaximumNotificationCount.FromCount(15));
+                cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(TimeSpan.FromSeconds(15), MaximumNotificationCount.FromCount(15));
                 cfg.PositionProvider = new PrimaryScreenPositionProvider(Corner.BottomRight, 10, 10);
+                cfg.KeyboardEventHandler = new AllowedSourcesInputEventHandler(new []{ typeof(CustomInputDisplayPart) });
             });
         }
 
@@ -44,6 +48,11 @@ namespace CustomNotificationsExample
             _notifier.ShowCustomCommand("Custom command example",
                 confirmAction: n => n.Close(), // do something usefull here
                 declineAction: n => n.Close());
+        }
+
+        private void CustomInput_Click(object sender, RoutedEventArgs e)
+        {
+            _notifier.ShowCustomInput("Custom input example");
         }
 
         private void MahApps_Click(object sender, RoutedEventArgs e)

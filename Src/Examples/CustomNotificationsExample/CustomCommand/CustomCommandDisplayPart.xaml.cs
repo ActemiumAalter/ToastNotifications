@@ -7,13 +7,10 @@ namespace CustomNotificationsExample.CustomCommand
     /// </summary>
     public partial class CustomCommandDisplayPart : NotificationDisplayPart
     {
-        private CustomCommandNotification _notification;
-
         public CustomCommandDisplayPart(CustomCommandNotification notification)
         {
             InitializeComponent();
-            _notification = notification;
-            DataContext = notification;
+            Bind(notification);
         }
     }
 }
